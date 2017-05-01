@@ -195,6 +195,6 @@ typedef std::vector< osg::ref_ptr<osg::Image> > ImageList;
 	    viewer->setSceneData(createModel());
         // I think we can do something here
         // Let's do it tomorrow
-
+        viewer->setUpViewInWindow(0,0,640,480);
 	    return viewer->run();
 	}
