@@ -1,4 +1,4 @@
-CSRCS=Tuto8.cpp
+CSRCS=main.cpp
 
 CFLAGS =  -c -O3 -DNDEBUG -fPIC
 
@@ -12,7 +12,7 @@ COBJS=$(patsubst %.cpp,%.o,$(CSRCS))
 
 CC = g++
 
-EXE=Tuto8
+EXE=application
 
 all: $(EXE)
 
