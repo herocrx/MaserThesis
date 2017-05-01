@@ -193,7 +193,8 @@ typedef std::vector< osg::ref_ptr<osg::Image> > ImageList;
 
 	    // create a model from the images and pass it to the viewer.
 	    viewer->setSceneData(createModel());
-
+        // I think we can do something here
+        // Let's do it tomorrow
 
 	    return viewer->run();
 	}
