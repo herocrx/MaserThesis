@@ -183,7 +183,9 @@ typedef std::vector< osg::ref_ptr<osg::Image> > ImageList;
 	    return geode;
 	}
 
-
+    // Make some fun 
+    // Learn more about camera manipulations
+    // Search where you can find more data related to this topic
 	int main(int , char **)
 	{
 	    // construct the viewer.
