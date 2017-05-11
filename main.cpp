@@ -190,11 +190,17 @@ typedef std::vector< osg::ref_ptr<osg::Image> > ImageList;
 	{
 	    // construct the viewer.
 	    osg::ref_ptr<osgViewer::Viewer> viewer = new osgViewer::Viewer();
-
-	    // create a model from the images and pass it to the viewer.
-	    viewer->setSceneData(createModel());
-        // I think we can do something here
-        // Let's do it tomorrow
+        viewer->home();    
         viewer->setUpViewInWindow(0,0,640,480);
-	    return viewer->run();
-	}
+        while (!viewer->done())
+        {
+            // create a model from the images and pass it to the viewer.
+            viewer->setSceneData(createModel());
+            // I think we can do something here
+            // Let's do it tomorrow
+              viewer->realize();
+              viewer->frame();
+        }
+            return 0;
+        
+    }
