@@ -1,4 +1,4 @@
-CSRCS=renderToTextures.cpp
+CSRCS=HUD.cpp
 
 CFLAGS =  -c -O3 -DNDEBUG -fPIC
 
@@ -12,7 +12,7 @@ COBJS=$(patsubst %.cpp,%.o,$(CSRCS))
 
 CC = g++
 
-EXE=renderToTextures
+EXE=HUD
 
 all: $(EXE)
 
