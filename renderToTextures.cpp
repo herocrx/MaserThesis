@@ -3,7 +3,7 @@
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
-
+#include <osg/MatrixTransform>
 class FindTextureVisitor : public osg::NodeVisitor {
     public:
         FindTextureVisitor (osg::Texture*tex): _texture(tex){
@@ -41,10 +41,34 @@ void FindTextureVisitor::replaceTexture( osg::StateSet* ss){
 }
 
 int main(int arg, char * argc[]){
-    osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("lz.osg");
+    //osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("lz.osg");
     //osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("Windshield.osg");
     osg::ref_ptr<osg::Node> sub_model = osgDB::readNodeFile("glider.osg");
     
+
+    float scale_parameter1 = 5.0f;
+    osg::ref_ptr<osg::MatrixTransform> model  = new osg::MatrixTransform;
+    model->setMatrix( osg::Matrix::translate(0.0f, -0.5f, 0.0f) *  osg::Matrix::rotate( -M_PI*0.5, 0, 0, 1 ) * osg::Matrix::scale(osg::Vec3d(scale_parameter1,scale_parameter1,scale_parameter1)) );
+
+   // model->addChild(osgDB::readNodeFile("lz.osg"));
+    model->addChild(osgDB::readNodeFile("Windshield.osg"));
+    //model->addChild(osgDB::readNodeFile("s3.osgt"));
+
+
+
+    float scale_parameter = 10.0f;
+    osg::ref_ptr<osg::MatrixTransform> windshield = new osg::MatrixTransform;
+    windshield->setMatrix( osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)) *  osg::Matrix::    rotate( -M_PI*0.5, 0, 0, 1 ) *  osg::Matrix::translate(0.0f, -0.5f, -0.9f));
+    windshield->addChild(osgDB::readNodeFile("szescian1.obj"));
+
+
+
+    osg::ref_ptr<osg::MatrixTransform> axes = new osg::MatrixTransform;
+    axes->setMatrix(osg::Matrix::translate(-0.8f, -0.5f, -0.9f) * osg::Matrix::    rotate( -M_PI*0.5, 0, 0, 1 ) *osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
+    axes->addChild(osgDB::readNodeFile("axes.osgt"));
+
+
+
     int tex_width = 1024, tex_height = 1024;
     osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
     texture->setTextureSize(tex_width,tex_height);
@@ -79,21 +103,29 @@ int main(int arg, char * argc[]){
     osg::ref_ptr<osg::Group> root = new osg::Group;
     root->addChild(camera.get());
     root->addChild(model.get());
+    //root->addChild(windshield.get());
+    root->addChild(axes.get());
 
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 
-    float delta = 0.1f, bias= 0.0f;
+    float delta = 0.001f, bias= 0.0f;
     osg::Vec3 eye(0.5f,-1.0f,5.0f);
-
+    int frame=  0;
     while ( !viewer.done()){
-        if (bias<-1.0f) 
-            delta = 0.1f;
-        else if ( bias>1.0f)
-            delta = 0.1f;
+        std::cout << "bias: " << bias << std::endl;
+        if (bias<-1.0f){ 
+            delta = 0.001f;
+            std::cout << "bias<-1.0" << std::endl;
+        }
+        else if ( bias>1.0f){
+            delta = -0.001f;
+            std::cout << "bias>1.0" << std::endl;
+        }
         bias+=delta;
-        camera->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,1.0f,1.0f));
+        camera->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
+        frame++;
         viewer.frame();
     }
     return 0;
