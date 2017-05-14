@@ -42,6 +42,7 @@ void FindTextureVisitor::replaceTexture( osg::StateSet* ss){
 
 int main(int arg, char * argc[]){
     osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("lz.osg");
+    //osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("Windshield.osg");
     osg::ref_ptr<osg::Node> sub_model = osgDB::readNodeFile("glider.osg");
     
     int tex_width = 1024, tex_height = 1024;
@@ -49,14 +50,15 @@ int main(int arg, char * argc[]){
     texture->setTextureSize(tex_width,tex_height);
     texture->setInternalFormat(GL_RGBA);
     texture->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::LINEAR);
-    texture->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::LINEAR);
+    texture->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::LINEAR);
 
     FindTextureVisitor ftv(texture.get());
-    if (model.valid()) model->accept(ftv);
+    if (model.valid()) 
+        model->accept(ftv);
 
     osg::ref_ptr<osg::Camera> camera = new osg::Camera;
     camera->setViewport(0,0,tex_width,tex_height);
-    camera->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+    camera->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,0.0f));
     camera->setClearMask(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     /*
@@ -75,20 +77,23 @@ int main(int arg, char * argc[]){
     camera->addChild (sub_model.get());
 
     osg::ref_ptr<osg::Group> root = new osg::Group;
-    root->addChild(camera);
+    root->addChild(camera.get());
+    root->addChild(model.get());
 
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 
     float delta = 0.1f, bias= 0.0f;
-    osg::Vec3 eye(0.5f,-5.0f,5.0f);
+    osg::Vec3 eye(0.5f,-1.0f,5.0f);
+
     while ( !viewer.done()){
         if (bias<-1.0f) 
             delta = 0.1f;
         else if ( bias>1.0f)
             delta = 0.1f;
-        camera->setViewMatrixAsLookAt(eye,osg::Vec3(),osg::Vec3f(bias,1.0f,1.0f));
+        bias+=delta;
+        camera->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,1.0f,1.0f));
         viewer.frame();
     }
     return 0;
