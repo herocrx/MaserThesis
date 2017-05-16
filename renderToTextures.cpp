@@ -4,6 +4,8 @@
 #include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
 #include <osg/MatrixTransform>
+#include <osg/BlendFunc>
+#include <osg/LightSource>
 class FindTextureVisitor : public osg::NodeVisitor {
     public:
         FindTextureVisitor (osg::Texture*tex): _texture(tex){
@@ -40,31 +42,72 @@ void FindTextureVisitor::replaceTexture( osg::StateSet* ss){
     }
 }
 
+
+
+/*
+osg::ref_ptr<osg::Group> CreateLight(osg::ref_ptr<osg::Node> node) { 
+    osg::ref_ptr<osg::Group> lightRoot=new osg::Group(); 
+    lightRoot->addChild(node); 
+    osg::ref_ptr<osg::StateSet> stateset=new osg::StateSet; 
+    stateset=lightRoot->getOrCreateStateSet (); 
+    stateset->setMode(GL_LIGHTING, osg::StateAttribute:ShockedN); 
+    stateset->setMode(GL_LIGHT0, osg::StateAttribute:ShockedN); 
+    stateset->setMode(GL_NORMALIZE, osg::StateAttribute:ShockedN); 
+
+    osg::BoundingSphere bs; 
+    node->computeBound(); 
+    bs=node->getBound(); 
+
+    osg::ref_ptr<osg:ight> light=new osg:light; 
+    light->setLightNum(0); 
+
+    light->setDirection(osg::Vec3(0.0f, 0.0f, 1.0f)); 
+    light->setPosition(osg::Vec4(bs.center().x(), bs.center().y(), 
+                bs.center().z()-bs.radius(), 1.0f)); 
+
+
+    light->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f)); 
+    light->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f)); 
+    light->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f)); 
+
+    osg::ref_ptr<osg:ightSource> lightSource=new osg:ightSource; 
+    lightSource->setLight(light.get()); 
+    lightRoot->addChild(lightSource); 
+    return lightRoot.get(); 
+
+} 
+*/
+
+
+
+
+
+
+
+
 int main(int arg, char * argc[]){
-    //osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("lz.osg");
-    //osg::ref_ptr<osg::Node> model = osgDB::readNodeFile("Windshield.osg");
+
     osg::ref_ptr<osg::Node> sub_model = osgDB::readNodeFile("glider.osg");
-    
 
-    float scale_parameter1 = 5.0f;
-    osg::ref_ptr<osg::MatrixTransform> model  = new osg::MatrixTransform;
-    model->setMatrix( osg::Matrix::translate(0.0f, -0.5f, 0.0f) *  osg::Matrix::rotate( -M_PI*0.5, 0, 0, 1 ) * osg::Matrix::scale(osg::Vec3d(scale_parameter1,scale_parameter1,scale_parameter1)) );
-
-   // model->addChild(osgDB::readNodeFile("lz.osg"));
-    model->addChild(osgDB::readNodeFile("Windshield.osg"));
-    //model->addChild(osgDB::readNodeFile("s3.osgt"));
-
-
-
-    float scale_parameter = 10.0f;
     osg::ref_ptr<osg::MatrixTransform> windshield = new osg::MatrixTransform;
-    windshield->setMatrix( osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)) *  osg::Matrix::    rotate( -M_PI*0.5, 0, 0, 1 ) *  osg::Matrix::translate(0.0f, -0.5f, -0.9f));
-    windshield->addChild(osgDB::readNodeFile("szescian1.obj"));
+    osg::Matrix rotateMatrix = osg::Matrix::rotate(M_PI, 0, 0, 1 );     
+    osg::Matrix scaleMatrix =  osg::Matrix::translate(3.0f, 0.0f, 0.0f);
+    float scale_parameter = 1.0f;
+    osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)); 
+    osg::BlendFunc *fuct = new osg::BlendFunc(); 
+    fuct->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
+    windshield->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);    
 
 
+    windshield->addChild(osgDB::readNodeFile("Windshield.osg"));
+    windshield->setMatrix(translateMatrix*rotateMatrix*scaleMatrix );
+
+
+             
 
     osg::ref_ptr<osg::MatrixTransform> axes = new osg::MatrixTransform;
-    axes->setMatrix(osg::Matrix::translate(-0.8f, -0.5f, -0.9f) * osg::Matrix::    rotate( -M_PI*0.5, 0, 0, 1 ) *osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
+    axes->setMatrix(osg::Matrix::translate(-5.0f, -3.0f, 0.0f) * osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
     axes->addChild(osgDB::readNodeFile("axes.osgt"));
 
 
@@ -77,35 +120,50 @@ int main(int arg, char * argc[]){
     texture->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::LINEAR);
 
     FindTextureVisitor ftv(texture.get());
-    if (model.valid()) 
-        model->accept(ftv);
+    if (windshield.valid()) 
+        windshield->accept(ftv);
 
-    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
-    camera->setViewport(0,0,tex_width,tex_height);
-    camera->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,0.0f));
-    camera->setClearMask(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    osg::ref_ptr<osg::Camera> cameraWindshield = new osg::Camera;
+    cameraWindshield->setViewport(0,0,tex_width,tex_height);
+    cameraWindshield->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,0.0f));
+    cameraWindshield->setClearMask(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    cameraWindshield->setRenderOrder (osg::Camera::PRE_RENDER);
+    cameraWindshield->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
+   cameraWindshield->attach (osg::Camera::COLOR_BUFFER, texture.get());
+   // Rendering on the whole surface
+    cameraWindshield->setReferenceFrame (osg::Camera::ABSOLUTE_RF);
+    cameraWindshield->addChild (sub_model.get());
 
-    /*
-     *Force the camera to be rendered before the main scene, and use the high
-     efficiency FBO to implement the render-to-textures technique. The key statement
-     in this example is to bind the color buffer with the texture object, which leads to
-     continuous updates of the texture object, redrawing the sub-scene graph again
-     and again:
-     */
-    camera->setRenderOrder (osg::Camera::PRE_RENDER);
-    camera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
-    camera->attach (osg::Camera::COLOR_BUFFER, texture.get());
+    osg::ref_ptr<osg::Group> windshieldGroup = new osg::Group;
+    windshieldGroup->addChild(cameraWindshield.get());
+    windshieldGroup->addChild(windshield.get());
+/*
+    osg::Light* pLight = new osg::Light(); 
+    pLight->setLightNum (0); 
+    pLight->setAmbient (osg::Vec4d (0.0, 0.0, 0.0, 1.0)); 
+    pLight->setDiffuse (osg::Vec4d (0.0, 0.0, 0.0, 1.0)); 
+    pLight->setSpecular (osg::Vec4d (0.0, 0.0, 0.0, 1.0)); 
+    osg::LightSource* pLightsource = new osg::LightSource(); 
+    pLightsource->setLight (pLight); 
+    pLightsource->setStateSetModes (*cameraWindshield->getOrCreateStateSet(), osg::StateAttribute::ON); 
+    cameraWindshield->addChild (pLightsource); 
+*/
 
-    // Set the camera to be absolute, and set the loaded glider to be its sub-scene graph
-    camera->setReferenceFrame (osg::Camera::ABSOLUTE_RF);
-    camera->addChild (sub_model.get());
+    osg::ref_ptr<osg::Camera> mainCamera = new osg::Camera;
+    mainCamera->addChild(windshieldGroup.get());
+    mainCamera->addChild(axes.get());
+    mainCamera->setClearColor(osg::Vec4(0.0f,1.0f,1.0f,0.0f));
+    mainCamera->setViewMatrixAsLookAt(osg::Vec3(0.0f,0.0f,-15.0f),osg::Vec3(),osg::Vec3(0.0f,2.0f,0.0f));
+    mainCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER, osg::Camera::FRAME_BUFFER);
+    // Nie mam pojecia co to robi
+    //mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
+    mainCamera->setRenderOrder ( osg::Camera::POST_RENDER);
+
 
     osg::ref_ptr<osg::Group> root = new osg::Group;
-    root->addChild(camera.get());
-    root->addChild(model.get());
-    //root->addChild(windshield.get());
-    root->addChild(axes.get());
-
+    root->addChild(mainCamera);
+    root->addChild(axes);
+    
     osgViewer::Viewer viewer;
     viewer.setSceneData(root.get());
     viewer.setCameraManipulator(new osgGA::TrackballManipulator);
@@ -124,7 +182,7 @@ int main(int arg, char * argc[]){
             std::cout << "bias>1.0" << std::endl;
         }
         bias+=delta;
-        camera->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
+        cameraWindshield->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
         frame++;
         viewer.frame();
     }
