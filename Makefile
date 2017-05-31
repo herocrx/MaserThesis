@@ -1,8 +1,9 @@
-CSRCS=renderToTextures.cpp
+CSRCS=main.cpp
 
 CFLAGS =  -c -O3 -DNDEBUG -fPIC
 
-INCLUDE = -I. -I/usr/include/ -I/usr/include/X11/ -I/usr/local/include/GL -L~/Programowanie/OSG/OpenSceneGraph-Data-3.0.0
+INCLUDE = -I. -I/usr/include/ -I/usr/include/X11/ -I/usr/local/include/GL -L~/Programowanie/OSG/OpenSceneGraph-Data-3.0.0 -L/home/heroadm/Programowanie/MasterThesis
+
 INCOSG = -I $(HOME)/OpenSceneGraph/include
 LDLIBS = -lm -ldl -lGL -lGLU -lpthread -lXext -lX11
 
@@ -12,7 +13,7 @@ COBJS=$(patsubst %.cpp,%.o,$(CSRCS))
 
 CC = g++
 
-EXE=renderToTextures
+EXE=Thesis
 
 all: $(EXE)
 
