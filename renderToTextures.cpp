@@ -96,11 +96,12 @@ int main(int arg, char * argc[]){
     osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)); 
     osg::BlendFunc *fuct = new osg::BlendFunc(); 
     fuct->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
-    windshield->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);    
-
+    //windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
+    //windshield->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);    
 
     windshield->addChild(osgDB::readNodeFile("Windshield.osg"));
+
+    //windshield->addChild(osgDB::readNodeFile("TestModel.osgt"));
     windshield->setMatrix(translateMatrix*rotateMatrix*scaleMatrix );
 
 
