@@ -1,2 +1,0 @@
-# MaserThesis
-MasterThesisWorkOSG

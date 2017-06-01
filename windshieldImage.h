@@ -23,7 +23,8 @@ namespace MasterThesisProject {
 			void loadWindshieldObject(std::string);
 			void loadSubModel(std::string);
 			void attachAnimation();
-			void setCamera();
+			void setProjectionTextureCamera();
+			void setHeadCamera();
 			void EncapsulateBlendTransparencyState();
 			osg::Node * release();
 		private:
@@ -45,4 +46,4 @@ namespace MasterThesisProject {
 	};
 
 
-}\
+}

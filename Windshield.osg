@@ -2,19 +2,20 @@ Group {
   name "WindshieldUnWrapped.obj"
   nodeMask 0xffffffff
   cullingActive TRUE
-  num_children 2
+  referenceFrame RELATIVE
+  num_children 3
   Geode {
     name "Window_Mesh.040"
     nodeMask 0xffffffff
     cullingActive TRUE
     num_drawables 1
     Geometry {
-      DataVariance STATIC
+      DataVariance DYNAMIC
       StateSet {
         UniqueID StateSet_0
         DataVariance STATIC
-        rendering_hint DEFAULT_BIN
-        renderBinMode INHERIT
+        rendering_hint TRANSPARENT_BIN
+        renderBinMode USE
         Material {
           name "Glass"
           ColorMode OFF
@@ -28,9 +29,9 @@ Group {
           GL_TEXTURE_2D ON
           Texture2D {
             file "Blender/textures/backwindow.png"
-            wrap_s REPEAT
-            wrap_t REPEAT
-            wrap_r REPEAT
+            wrap_s CLAMP
+            wrap_t CLAMP
+            wrap_r CLAMP
             min_filter LINEAR_MIPMAP_LINEAR
             mag_filter LINEAR
             maxAnisotropy 1

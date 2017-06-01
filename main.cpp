@@ -3,10 +3,11 @@
 namespace MasterThesisProject{
 
 	void runAnimation(osg::ref_ptr<osg::Group> root){
-//void runAnimation(osg::ref_ptr<osg::Group> root, windshieldImage *Windshield){
+        //void runAnimation(osg::ref_ptr<osg::Group> root, windshieldImage *Windshield){
 		osgViewer::Viewer viewer;
 		viewer.setSceneData(root.get());
-		viewer.setCameraManipulator(new osgGA::TrackballManipulator);
+		//dodatkowa kamera do patrzenia
+		//viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 		float delta = 0.001f, bias= 0.0f;
 		osg::Vec3 eye(0.5f,-1.0f,5.0f);
 		int frame=  0;
@@ -21,7 +22,7 @@ namespace MasterThesisProject{
 				//std::cout << "bias>1.0" << std::endl;
 			}
 			bias+=delta;
-			Windshield->getWindshieldCamera()->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
+			//Windshield->getWindshieldCamera()->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
 			//.windshield->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
 			frame++;
 			viewer.frame();
@@ -34,7 +35,7 @@ namespace MasterThesisProject{
 		osg::ref_ptr<osg::MatrixTransform> axes = new osg::MatrixTransform;
 	    axes->setMatrix(osg::Matrix::translate(-5.0f, -3.0f, 0.0f) * osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
 	    axes->addChild(osgDB::readNodeFile("axes.osgt"));
-	    return axes.release() ;
+	    return axes.release();
 	}
 
 	osg::Node * addWindshield(){
@@ -43,8 +44,11 @@ namespace MasterThesisProject{
 		Windshield->loadWindshieldObject();
 		Windshield->setPositionWindshield();
 		Windshield->setTextureFormatAndFilter();
+		Windshield->setTextureSize();
 		Windshield->EncapsulateBlendTransparencyState();
-		//ddWindshiel
+		Windshield->setProjectionTextureCamera();
+		// this can be managable -> here must be found the way to manipualte Eye trackng
+		Windshield->setHeadCamera();
 		return Windshield->release() ;
 	}
 
@@ -56,8 +60,9 @@ namespace MasterThesisProject{
 int main(int arg, char * argc[]){
 
     osg::ref_ptr<osg::Group> root = new osg::Group;
-    root->addChild(MasterThesisProject::addWindshield());
     root->addChild(MasterThesisProject::addAxes());
+    root->addChild(MasterThesisProject::addWindshield());
+
     MasterThesisProject::runAnimation(root);
 
 	return 0;
