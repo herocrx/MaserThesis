@@ -31,9 +31,9 @@ namespace MasterThesisProject{
 
 
 	osg::Node * addAxes(){
-	    float scale_parameter = 1.0f;
+	    float scale_parameter = 0.2f;
 		osg::ref_ptr<osg::MatrixTransform> axes = new osg::MatrixTransform;
-	    axes->setMatrix(osg::Matrix::translate(-5.0f, -3.0f, 0.0f) * osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
+	    axes->setMatrix(osg::Matrix::translate(-6.0f, -3.5f, 0.0f) * osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)));
 	    axes->addChild(osgDB::readNodeFile("axes.osgt"));
 	    return axes.release();
 	}
@@ -48,22 +48,37 @@ namespace MasterThesisProject{
 		Windshield->EncapsulateBlendTransparencyState();
 		Windshield->setProjectionTextureCamera();
 		// this can be managable -> here must be found the way to manipualte Eye trackng
-		Windshield->setHeadCamera();
+		//Windshield->setHeadCamera();
 		return Windshield->release() ;
 	}
 
 
+	osg::Camera * setHeadCamera(){
+		osg::ref_ptr<osg::Camera> mainCamera = new osg::Camera;
+	    mainCamera->setClearColor(osg::Vec4(0.0f,1.0f,1.0f,0.0f));
+	    mainCamera->setViewMatrixAsLookAt(osg::Vec3(0.0f,0.0f,-3.0f),osg::Vec3(),osg::Vec3(0.0f,2.0f,0.0f));
+	    mainCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER, osg::Camera::FRAME_BUFFER);
+	    // Nie mam pojecia co to robi
+	    //mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
+	    mainCamera->setRenderOrder ( osg::Camera::POST_RENDER);
+	    return mainCamera.release();
+	}
 
 }
 
 
+
+
+
 int main(int arg, char * argc[]){
 
-    osg::ref_ptr<osg::Group> root = new osg::Group;
-    root->addChild(MasterThesisProject::addAxes());
-    root->addChild(MasterThesisProject::addWindshield());
+    //osg::ref_ptr<osg::Group> root = new osg::Group;
+	osg::ref_ptr<osg::Camera> mainCamera = MasterThesisProject::setHeadCamera();
 
-    MasterThesisProject::runAnimation(root);
+	mainCamera->addChild(MasterThesisProject::addWindshield());
+	mainCamera->addChild(MasterThesisProject::addAxes());
+
+    MasterThesisProject::runAnimation(mainCamera);
 
 	return 0;
 }

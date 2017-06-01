@@ -7,7 +7,6 @@ namespace MasterThesisProject{
 		windshield = new osg::MatrixTransform;
 		texture = new osg::Texture2D;
 		cameraWindshield = new osg::Camera;
-		mainCamera = new osg::Camera;
 	    windshieldGroup = new osg::Group;
 	    windshieldGroup->addChild(cameraWindshield.get());
 	    windshieldGroup->addChild(windshield.get());
@@ -130,7 +129,7 @@ namespace MasterThesisProject{
 
 
 	osg::Node * windshieldImage::release(){
-		return mainCamera.release();
+		return windshieldGroup.release();
 	}
 
 
