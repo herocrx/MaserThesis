@@ -11,17 +11,17 @@ namespace MasterThesisProject{
 		osg::Vec3 eye(0.5f,-1.0f,5.0f);
 		int frame=  0;
 		while ( !viewer.done()){
-			std::cout << "bias: " << bias << std::endl;
+			//std::cout << "bias: " << bias << std::endl;
 			if (bias<-1.0f){
 				delta = 0.001f;
 				std::cout << "bias<-1.0" << std::endl;
 			}
 			else if ( bias>1.0f){
 				delta = -0.001f;
-				std::cout << "bias>1.0" << std::endl;
+				//std::cout << "bias>1.0" << std::endl;
 			}
 			bias+=delta;
-			//Windshield->getWindshieldCamera()->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
+			Windshield->getWindshieldCamera()->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
 			//.windshield->setViewMatrixAsLookAt(eye,osg::Vec3(0,0,0),osg::Vec3(bias,0.5f,0.5f));
 			frame++;
 			viewer.frame();
@@ -39,10 +39,13 @@ namespace MasterThesisProject{
 
 	osg::Node * addWindshield(){
 		windshieldImage  *Windshield = new windshieldImage();
-		Windshield->attachWindshieldAsTexture();
-		//ddWindshield
-		//Windshield->
-	    //return Windshield->release() ;
+		Windshield->loadSubModel();
+		Windshield->loadWindshieldObject();
+		Windshield->setPositionWindshield();
+		Windshield->setTextureFormatAndFilter();
+		Windshield->EncapsulateBlendTransparencyState();
+		//ddWindshiel
+		return Windshield->release() ;
 	}
 
 

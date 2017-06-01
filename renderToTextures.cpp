@@ -90,10 +90,10 @@ int main(int arg, char * argc[]){
     osg::ref_ptr<osg::Node> sub_model = osgDB::readNodeFile("glider.osg");
 
     osg::ref_ptr<osg::MatrixTransform> windshield = new osg::MatrixTransform;
-    osg::Matrix rotateMatrix = osg::Matrix::rotate(M_PI, 0, 0, 1 );     
+    osg::Matrix rotateMatrix = osg::Matrix::rotate(M_PI, 0, 0, 1 );
     osg::Matrix scaleMatrix =  osg::Matrix::translate(3.0f, 0.0f, 0.0f);
     float scale_parameter = 1.0f;
-    osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter)); 
+    osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter));
     osg::BlendFunc *fuct = new osg::BlendFunc(); 
     fuct->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     //windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
