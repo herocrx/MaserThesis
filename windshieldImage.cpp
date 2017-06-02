@@ -1,8 +1,10 @@
 #include "windshieldImage.h"
-//#include "FindTextureVisitor.cpp"
+#include "FindTextureVisitor.cpp"
 #include <string>
 
 namespace MasterThesisProject{
+
+
 	windshieldImage::windshieldImage() : scale_parameter(1.5f), tex_width(0), tex_height(0){
 		windshield = new osg::MatrixTransform;
 		texture = new osg::Texture2D;
@@ -17,7 +19,7 @@ namespace MasterThesisProject{
 	bool  windshieldImage::attachWindshieldAsTexture(){
 		std::cout <<"Hubi to mistrz" << std::endl;
 		std::cout << "Hero" << std::endl;
-
+		return true;
 	}
 
 
@@ -62,6 +64,7 @@ namespace MasterThesisProject{
 		pLightsource->setLight (pLight);
 		pLightsource->setStateSetModes (*cameraWindshield->getOrCreateStateSet(), osg::StateAttribute::ON);
 		cameraWindshield->addChild (pLightsource);
+		return true;
 	}
 
 
@@ -69,10 +72,11 @@ namespace MasterThesisProject{
 	osg::Node * windshieldImage::getNode(){
 
 
-
-
-
+	//	return;
 	}
+
+
+
 
 	void windshieldImage::setProjectionTextureCamera(){
 		  cameraWindshield->setViewport(0,0,tex_width,tex_height);
@@ -85,7 +89,6 @@ namespace MasterThesisProject{
 		  cameraWindshield->setReferenceFrame (osg::Camera::ABSOLUTE_RF);
 		  cameraWindshield->addChild (sub_model.get());
 	}
-
 
 
 	void windshieldImage::setHeadCamera(){
@@ -102,6 +105,7 @@ namespace MasterThesisProject{
 		 tex_width = 1024;
 		 tex_height = 1024;
 		 texture->setTextureSize(tex_width,tex_height);
+		 return;
 
 	}
 
@@ -113,25 +117,20 @@ namespace MasterThesisProject{
 		return;
 	}
 
-	osg::Node * windshieldImage::getWindshieldCamera(){
-		return cameraWindshield.release();
+	osg::Camera * windshieldImage::getWindshieldCamera(){
+		return cameraWindshield.get();
 	}
 
 	void windshieldImage::attachAnimation(){
-		/*
 	    FindTextureVisitor ftv(texture.get());
 	    if (windshield.valid())
 	        windshield->accept(ftv);
 		return;
-
-		*/
 	}
 
 
 	osg::Node * windshieldImage::release(){
 		return windshieldGroup.release();
 	}
-
-
 }
 

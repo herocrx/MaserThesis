@@ -1,9 +1,6 @@
-#include <osg/Camera>
-#include <osg/Texture2D>
-#include <osgDB/ReadFile>
+
 #include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
-#include <osg/MatrixTransform>
 #include <osg/BlendFunc>
 #include <osg/LightSource>
 
@@ -18,7 +15,7 @@ namespace MasterThesisProject {
 			bool setPositionWindshield();
 			bool setLight();
 			osg::Node * getNode();
-			osg::Node * getWindshieldCamera();
+			osg::Camera * getWindshieldCamera();
 			void setTextureFormatAndFilter();
 			void loadWindshieldObject(std::string);
 			void loadSubModel(std::string);
