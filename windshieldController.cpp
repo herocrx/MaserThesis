@@ -18,6 +18,7 @@ namespace MasterThesisProject{
 		mainCamera->addChild(Windshield->get());
 		mainCamera->addChild(axes);
 		viewer.setSceneData(mainCamera.get());
+		setLight();
 		return;
 	}
 
@@ -66,14 +67,29 @@ namespace MasterThesisProject{
 	}
 
 	void windshieldController::addHeadCamera(){
-	    mainCamera->setClearColor(osg::Vec4(0.0f,1.0f,1.0f,0.0f));
+	    mainCamera->setClearColor(osg::Vec4(0.0f,0.0f,0.0f,0.0f));
 	    mainCamera->setViewMatrixAsLookAt(osg::Vec3(0.0f,0.0f,-3.0f),osg::Vec3(),osg::Vec3(0.0f,2.0f,0.0f));
 	    mainCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER, osg::Camera::FRAME_BUFFER);
 	    // Nie mam pojecia co to robi
-	    //mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
+	   // mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
 	    mainCamera->setRenderOrder ( osg::Camera::POST_RENDER);
 	    return;
 	}
+
+	bool windshieldController::setLight(){
+		osg::Light* pLight = new osg::Light();
+		pLight->setLightNum (0);
+		pLight->setAmbient (osg::Vec4d (1.0, 1.0, 1.0, 1.0));
+		pLight->setDiffuse (osg::Vec4d (1.0, 1.0, 1.0, 1.0));
+		pLight->setSpecular (osg::Vec4d (1.0, 1.0, 1.0, 1.0));
+		osg::LightSource* pLightsource = new osg::LightSource();
+		pLightsource->setLight (pLight);
+		pLightsource->setStateSetModes (*mainCamera->getOrCreateStateSet(), osg::StateAttribute::ON);
+		mainCamera->addChild (pLightsource);
+		return true;
+	}
+
+
 
 
 

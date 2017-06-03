@@ -12,7 +12,6 @@ namespace MasterThesisProject {
 			windshieldImage();
 			void setTextureSize();
 			bool setPositionWindshield();
-			bool setLight();
 			osg::Camera * getWindshieldCamera();
 			void setTextureFormatAndFilter();
 			void loadWindshieldObject(std::string);

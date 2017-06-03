@@ -12,6 +12,7 @@ namespace MasterThesisProject{
 			void addWindshield();
 			void addAxes();
 			void addHeadCamera();
+			bool setLight();
 			windshieldImage  *Windshield;
 			osg::ref_ptr<osg::MatrixTransform> axes;
 			osg::ref_ptr<osg::Camera> mainCamera;

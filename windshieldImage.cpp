@@ -44,24 +44,6 @@ namespace MasterThesisProject{
 
 
 
-	bool windshieldImage::setLight(){
-		osg::Light* pLight = new osg::Light();
-		pLight->setLightNum (0);
-		pLight->setAmbient (osg::Vec4d (0.0, 0.0, 0.0, 1.0));
-		pLight->setDiffuse (osg::Vec4d (0.0, 0.0, 0.0, 1.0));
-		pLight->setSpecular (osg::Vec4d (0.0, 0.0, 0.0, 1.0));
-		osg::LightSource* pLightsource = new osg::LightSource();
-		pLightsource->setLight (pLight);
-		pLightsource->setStateSetModes (*cameraWindshield->getOrCreateStateSet(), osg::StateAttribute::ON);
-		cameraWindshield->addChild (pLightsource);
-		return true;
-	}
-
-
-
-
-
-
 	void windshieldImage::setProjectionTextureCamera(){
 		  cameraWindshield->setViewport(0,0,tex_width,tex_height);
 		  cameraWindshield->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,0.0f));
