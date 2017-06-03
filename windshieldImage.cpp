@@ -5,7 +5,7 @@
 namespace MasterThesisProject{
 
 
-	windshieldImage::windshieldImage() : scale_parameter(1.5f), tex_width(0), tex_height(0){
+	windshieldImage::windshieldImage() : scale_parameter(0.3f), tex_width(0), tex_height(0){
 		windshield = new osg::MatrixTransform;
 		texture = new osg::Texture2D;
 		cameraWindshield = new osg::Camera;
@@ -14,19 +14,9 @@ namespace MasterThesisProject{
 	    windshieldGroup->addChild(windshield.get());
 	}
 
-
-
-	bool  windshieldImage::attachWindshieldAsTexture(){
-		std::cout <<"Hubi to mistrz" << std::endl;
-		std::cout << "Hero" << std::endl;
-		return true;
-	}
-
-
-
 	bool windshieldImage::setPositionWindshield(){
-	    rotateMatrix = osg::Matrix::rotate(float(0.5*M_PI), float(3/4*M_PI), 0, 1 );
-	    scaleMatrix =  osg::Matrix::translate(0.0f, 0.2f, 0.0f);
+	    rotateMatrix = osg::Matrix::rotate(float(M_PI), float(-1/4*M_PI), float(1/4*M_PI), 1 );
+	    scaleMatrix =  osg::Matrix::translate(0.4f, -0.3f, 0.0f);
 	    osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter));
 	    windshield->setMatrix(translateMatrix*rotateMatrix*scaleMatrix );
 	    return true;
@@ -48,7 +38,7 @@ namespace MasterThesisProject{
 	}
 
 	void windshieldImage::loadSubModel(std::string subModelName = "glider.osg"){
-	    osg::ref_ptr<osg::Node> sub_model = osgDB::readNodeFile(subModelName);
+	    sub_model = osgDB::readNodeFile(subModelName);
 	    return;
 	}
 
@@ -69,12 +59,6 @@ namespace MasterThesisProject{
 
 
 
-	osg::Node * windshieldImage::getNode(){
-
-
-	//	return;
-	}
-
 
 
 
@@ -85,28 +69,18 @@ namespace MasterThesisProject{
 		  cameraWindshield->setRenderOrder (osg::Camera::PRE_RENDER);
 		  cameraWindshield->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER_OBJECT);
 		  cameraWindshield->attach (osg::Camera::COLOR_BUFFER, texture.get());
-		   // Rendering on the whole surface
+		   // Rendering on the whole surfacesetProjectionTextureCamera
 		  cameraWindshield->setReferenceFrame (osg::Camera::ABSOLUTE_RF);
 		  cameraWindshield->addChild (sub_model.get());
 	}
 
 
-	void windshieldImage::setHeadCamera(){
-	    mainCamera->addChild(windshieldGroup.get());
-	    mainCamera->setClearColor(osg::Vec4(0.0f,1.0f,1.0f,0.0f));
-	    mainCamera->setViewMatrixAsLookAt(osg::Vec3(0.0f,0.0f,-2.0f),osg::Vec3(),osg::Vec3(0.0f,2.0f,0.0f));
-	    mainCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER, osg::Camera::FRAME_BUFFER);
-	    // Nie mam pojecia co to robi
-	    //mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
-	    mainCamera->setRenderOrder ( osg::Camera::POST_RENDER);
-	}
 
 	void windshieldImage::setTextureSize(){
 		 tex_width = 1024;
 		 tex_height = 1024;
 		 texture->setTextureSize(tex_width,tex_height);
 		 return;
-
 	}
 
 
@@ -121,6 +95,11 @@ namespace MasterThesisProject{
 		return cameraWindshield.get();
 	}
 
+	osg::Node * windshieldImage::get(){
+		return windshieldGroup.get();
+	}
+
+
 	void windshieldImage::attachAnimation(){
 	    FindTextureVisitor ftv(texture.get());
 	    if (windshield.valid())
@@ -129,8 +108,5 @@ namespace MasterThesisProject{
 	}
 
 
-	osg::Node * windshieldImage::release(){
-		return windshieldGroup.release();
-	}
 }
 

@@ -96,8 +96,8 @@ int main(int arg, char * argc[]){
     osg::Matrix translateMatrix = osg::Matrix::scale(osg::Vec3d(scale_parameter,scale_parameter,scale_parameter));
     osg::BlendFunc *fuct = new osg::BlendFunc(); 
     fuct->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    //windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
-    //windshield->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);    
+    windshield->getOrCreateStateSet()->setAttributeAndModes(fuct); 
+    windshield->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);    
 
     windshield->addChild(osgDB::readNodeFile("Windshield.osg"));
 
@@ -157,7 +157,7 @@ int main(int arg, char * argc[]){
     mainCamera->setViewMatrixAsLookAt(osg::Vec3(0.0f,0.0f,-15.0f),osg::Vec3(),osg::Vec3(0.0f,2.0f,0.0f));
     mainCamera->setRenderTargetImplementation(osg::Camera::FRAME_BUFFER, osg::Camera::FRAME_BUFFER);
     // Nie mam pojecia co to robi
-    //mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
+    mainCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
     mainCamera->setRenderOrder ( osg::Camera::POST_RENDER);
 
 
