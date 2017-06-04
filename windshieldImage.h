@@ -33,6 +33,7 @@ namespace MasterThesisProject {
 			osg::Matrix rotateMatrix;
 			osg::Matrix scaleMatrix;
 			osg::Matrix translateMatrix;
+			osg::ref_ptr<osg::MatrixTransform> subModelTransform;
 	};
 
 

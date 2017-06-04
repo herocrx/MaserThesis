@@ -17,6 +17,10 @@ namespace MasterThesisProject{
 			osg::ref_ptr<osg::MatrixTransform> axes;
 			osg::ref_ptr<osg::Camera> mainCamera;
 			osgViewer::Viewer viewer;
+			osg::ref_ptr<keyboardController> keyboardControl;
+
+
+
 	};
 
 
