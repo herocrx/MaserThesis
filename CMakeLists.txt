@@ -27,7 +27,7 @@ add_subdirectory(private)
 add_executable(masterThesisRun main.cpp)
 
 target_link_libraries(masterThesisRun Windshield osg osgGA osgViewer osgDB)
-
+#target_link_libraries(masterThesisRun FindTextureVisitor keyboardController windshieldController windshieldImage osg osgGA osgViewer osgDB)
 
 message("-- Creating folder resources")
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/resources)
