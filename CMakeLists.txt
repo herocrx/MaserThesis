@@ -20,14 +20,14 @@ find_package(osgUtil)
 find_package(osgViewer)
 
 # add the binary tree to the searc pat for include files
-include_directories(public/inc OpenSceneGraph/include private)
+include_directories(public/inc OpenSceneGraph/include)
 
 add_subdirectory(private)
 
 add_executable(masterThesisRun main.cpp)
 
-target_link_libraries(masterThesisRun Windshield osg osgGA osgViewer osgDB)
-
+#target_link_libraries(masterThesisRun Windshield osg osgGA osgViewer osgDB)
+target_link_libraries(masterThesisRun osg osgGA osgViewer osgDB Windshield)
 
 message("-- Creating folder resources")
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/resources)

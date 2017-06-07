@@ -1,9 +1,8 @@
-
 #include <osg/Camera>
 #include <osg/Texture2D>
 #include <osgDB/ReadFile>
 #include <osg/MatrixTransform>
-#include "keyboardController.cpp"
+//#include "keyboardController.hpp"
 #include "windshieldController.hpp"
 
 namespace MasterThesisProject{
@@ -47,8 +46,8 @@ namespace MasterThesisProject{
 
 
 	void windshieldController::addWindshield(){
-		Windshield->loadSubModel();
-		Windshield->loadWindshieldObject();
+		Windshield->loadSubModel("resources/glider.osg");
+		Windshield->loadWindshieldObject("resources/Windshield.osg");
 		Windshield->setPositionWindshield();
 		Windshield->setTextureSize();
     	Windshield->setTextureFormatAndFilter();

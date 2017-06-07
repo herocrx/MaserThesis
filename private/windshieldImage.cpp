@@ -1,5 +1,5 @@
 #include "windshieldImage.hpp"
-#include "FindTextureVisitor.cpp"
+#include "FindTextureVisitor.hpp"
 #include <string>
 #include <iostream>
 #include "osg/Material"
