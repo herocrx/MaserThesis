@@ -36,6 +36,8 @@ configure_file(resources/OpenSceneGraph-Data-3.0.0/axes.osgt ${CMAKE_CURRENT_BIN
 message("-- Moving Windshield.osg to /bin/resources")
 configure_file(resources/OpenSceneGraph-Data-3.0.0/Windshield.osg ${CMAKE_CURRENT_BINARY_DIR}/bin/resources  COPYONLY)
 message("-- Moving glider.osg to /bin/resources")
+configure_file(resources/background.jpeg ${CMAKE_CURRENT_BINARY_DIR}/bin/resources  COPYONLY)
+message("-- Moving glider.osg to /bin/resources")
 configure_file(resources/OpenSceneGraph-Data-3.0.0/glider.osg ${CMAKE_CURRENT_BINARY_DIR}/bin/resources  COPYONLY)
 message("-- Moving Script_To_Compile.sh to /bin/")
 configure_file(scripts/Script_To_Compile.sh ${CMAKE_CURRENT_BINARY_DIR}/bin  COPYONLY)
